@@ -1,30 +1,125 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Ejemplo de JavaScript</title>
-<meta charset="UTF-8">
-</head>
-<body>
-<script>
+MySQL Shell 8.0.36
 
-let valor;
-do {
-valor = parseInt(prompt('Ingrese un valor entre 0 y 999:', ''));
-document.write('El valor ' + valor + ' tiene ');
-if (valor < 10) {
-document.write('Tiene 1 digitos');
-} else {
-if (valor < 100) {
-document.write('Tiene 2 digitos');
-} else {
-document.write('Tiene 3 digitos');
-}
-}
-document.write('<br>');
-} while (valor != 0);
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
 
-</script>
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 19
+Server version: 8.0.36 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create data base tbd2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'data base tbd2' at line 1
+ MySQL  localhost:3306 ssl  SQL > create database tbd2;
+Query OK, 1 row affected (0.1971 sec)
+ MySQL  localhost:3306 ssl  SQL > use tbd2;
+Default schema set to `tbd2`.
+Fetching global names, object names from `tbd2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd2  SQL > create table clientes(
+                                     -> id int auto_increment,
+                                     -> nombre varchar(50) not null,
+                                     -> apellido varchar(50) not null,
+                                     -> fecha_nac date not null);
+ERROR: 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+ MySQL  localhost:3306 ssl  tbd2  SQL > create table clientes( id int key auto_increment, nombre varchar(50) not null, apellido varchar(50) not null, fecha_nac date not null);
+Query OK, 0 rows affected (1.3614 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > create table direcciones(
+                                     -> id in key auto_increment,
+                                     -> id_clientes int not null,
+                                     -> calle varchar(50) not null,
+                                     -> colonia varchar(50) not null
+                                     -> foreign key (id_cliente)
+                                     -> references clientes(id)
+                                     -> on delete restrict
+                                     -> on update cascade);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in key auto_increment,
+id_clientes int not null,
+calle varchar(50) not null,
+col' at line 2
+ MySQL  localhost:3306 ssl  tbd2  SQL > create table direcciones( id int key auto_increment, id_clientes int not null, calle varchar(50) not null, colonia varchar(50) not null, foreign key (id_cliente) references clientes(id) on delete restrict on update cascade);
+ERROR: 1072 (42000): Key column 'id_cliente' doesn't exist in table
+ MySQL  localhost:3306 ssl  tbd2  SQL > create table direcciones( id int key auto_increment, id_clientes int not null, calle varchar(50) not null, colonia varchar(50) not null, foreign key (id_clientes) references clientes(id) on delete restrict on update cascade);
+Query OK, 0 rows affected (0.6518 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > desc clientes;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int         | NO   | PRI | NULL    | auto_increment |
+| nombre    | varchar(50) | NO   |     | NULL    |                |
+| apellido  | varchar(50) | NO   |     | NULL    |                |
+| fecha_nac | date        | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0981 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > desc direcciones;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id          | int         | NO   | PRI | NULL    | auto_increment |
+| id_clientes | int         | NO   | MUL | NULL    |                |
+| calle       | varchar(50) | NO   |     | NULL    |                |
+| colonia     | varchar(50) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0030 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > insert into clientes(nombre, apellido, fecha_nac) values("juan", "perez", '1981-11-10'), ("pedro", "paramo", '1999-07-05'), ("jorge", "ElCurioso", '2020-06-06');
+Query OK, 3 rows affected (0.1377 sec)
 
-</body>
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+-----------+------------+
+| id | nombre | apellido  | fecha_nac  |
++----+--------+-----------+------------+
+|  1 | juan   | perez     | 1981-11-10 |
+|  2 | pedro  | paramo    | 1999-07-05 |
+|  3 | jorge  | ElCurioso | 2020-06-06 |
++----+--------+-----------+------------+
+3 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > desc direcciones;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id          | int         | NO   | PRI | NULL    | auto_increment |
+| id_clientes | int         | NO   | MUL | NULL    |                |
+| calle       | varchar(50) | NO   |     | NULL    |                |
+| colonia     | varchar(50) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > insert into direcciones(
+                                     -> id_clientes, calle, colonia)
+                                     -> values(5, "romero", "SanGregorio");
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > insert into direcciones( id_clientes, calle, colonia)  values(1, "romero", "SanGregorio");
+Query OK, 1 row affected (0.1598 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > insert into direcciones( id_clientes, calle, colonia)  values(2, "Av. industrias", "Revo.");
+Query OK, 1 row affected (0.1503 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > insert into direcciones( id_clientes, calle, colonia)  values(2, "Av. Delicias", "Paseos");
+Query OK, 1 row affected (0.1255 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes
+                                     -> where id=1;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes where id=2;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes where id=2;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes where id=3;
+Query OK, 1 row affected (0.1248 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > update clientes set
+                                     -> id=5
+                                     -> where id=1;
+Query OK, 1 row affected (0.0799 sec)
 
-</html>
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+-------------+
+| id | id_clientes | calle          | colonia     |
++----+-------------+----------------+-------------+
+|  2 |           5 | romero         | SanGregorio |
+|  3 |           2 | Av. industrias | Revo.       |
+|  4 |           2 | Av. Delicias   | Paseos      |
++----+-------------+----------------+-------------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL >
