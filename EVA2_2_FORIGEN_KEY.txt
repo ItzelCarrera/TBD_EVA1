@@ -1,0 +1,358 @@
+MySQL Shell 8.0.36
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect -mc root@localhost
+WARNING: The -mc option was deprecated, please use --mc instead. (Option has been processed as --mc).
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 20
+Server version: 8.0.36 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| agencia            |
+| credit_cards       |
+| information_schema |
+| mysql              |
+| orders             |
+| performance_schema |
+| rh                 |
+| sakila             |
+| sys                |
+| tbd2               |
+| tbd_1              |
+| world              |
++--------------------+
+12 rows in set (0.3906 sec)
+ MySQL  localhost:3306 ssl  SQL > use tbd2;
+Default schema set to `tbd2`.
+Fetching global names, object names from `tbd2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd2  SQL > show tables;
++----------------+
+| Tables_in_tbd2 |
++----------------+
+| clientes       |
+| direcciones    |
++----------------+
+2 rows in set (0.2179 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > use clientes;
+MySQL Error 1049: Unknown database 'clientes'
+ MySQL  localhost:3306 ssl  tbd2  SQL > desc clientes;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int         | NO   | PRI | NULL    | auto_increment |
+| nombre    | varchar(50) | NO   |     | NULL    |                |
+| apellido  | varchar(50) | NO   |     | NULL    |                |
+| fecha_nac | date        | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0027 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+----------+------------+
+| id | nombre | apellido | fecha_nac  |
++----+--------+----------+------------+
+|  2 | pedro  | paramo   | 1999-07-05 |
+|  5 | juan   | perez    | 1981-11-10 |
++----+--------+----------+------------+
+2 rows in set (0.1192 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones
+                                     -> ;
+Query OK, 0 rows affected (0.2917 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create table;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create tables;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tables' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create table;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create table;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL >
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create table direcciones;
++-------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table       | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                    |
++-------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| direcciones | CREATE TABLE `direcciones` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_clientes` int NOT NULL,
+  `calle` varchar(50) NOT NULL,
+  `colonia` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_clientes` (`id_clientes`),
+  CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0401 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones
+                                     -> drop constrains direcciones_ibfk_1;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'direcciones_ibfk_1' at line 2
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones  drop constrains direcciones_ibfk_1;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'direcciones_ibfk_1' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones drop constraint direcciones_ibfk_1;
+Query OK, 0 rows affected (3.8010 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > desc direcciones;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id          | int         | NO   | PRI | NULL    | auto_increment |
+| id_clientes | int         | NO   | MUL | NULL    |                |
+| calle       | varchar(50) | NO   |     | NULL    |                |
+| colonia     | varchar(50) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0342 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > insert into direcciones(id_cliente. calle, colonia) values (6, "nhubuhu", "hbuybu");
+ERROR: 1054 (42S22): Unknown column 'id_cliente.calle' in 'field list'
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+-------------+
+| id | id_clientes | calle          | colonia     |
++----+-------------+----------------+-------------+
+|  2 |           5 | romero         | SanGregorio |
+|  3 |           2 | Av. industrias | Revo.       |
+|  4 |           2 | Av. Delicias   | Paseos      |
++----+-------------+----------------+-------------+
+3 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones
+                                     -> add constraint foreigin key(id_clientes)
+                                     -> references clientes
+                                     -> on delete restrict
+                                     -> on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key(id_clientes)
+references clientes
+on delete restrict
+on update cascade' at line 2
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreigin key(id_clientes) references clientes(id) on delete restrict on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key(id_clientes) references clientes(id) on delete restrict on update cascade' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from direcciones
+                                     -> where id_clientes=6;
+Query OK, 0 rows affected (0.0116 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+-------------+
+| id | id_clientes | calle          | colonia     |
++----+-------------+----------------+-------------+
+|  2 |           5 | romero         | SanGregorio |
+|  3 |           2 | Av. industrias | Revo.       |
+|  4 |           2 | Av. Delicias   | Paseos      |
++----+-------------+----------------+-------------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreigin key(id_clientes) references clientes(id) on delete restrict on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key(id_clientes) references clientes(id) on delete restrict on update cascade' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete restrict on update cascade;
+Query OK, 3 rows affected (6.0126 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes
+                                     -> where id=5;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > update clientes set id=10
+                                     -> where id=3;
+Query OK, 0 rows affected (0.0009 sec)
+
+Rows matched: 0  Changed: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+-------------+
+| id | id_clientes | calle          | colonia     |
++----+-------------+----------------+-------------+
+|  2 |           5 | romero         | SanGregorio |
+|  3 |           2 | Av. industrias | Revo.       |
+|  4 |           2 | Av. Delicias   | Paseos      |
++----+-------------+----------------+-------------+
+3 rows in set (0.0261 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create table direcciones;
++-------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table       | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                    |
++-------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| direcciones | CREATE TABLE `direcciones` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_clientes` int NOT NULL,
+  `calle` varchar(50) NOT NULL,
+  `colonia` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_clientes` (`id_clientes`),
+  CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones drop
+                                     -> constraint direcciones_ibfk_1;
+Query OK, 0 rows affected (0.3538 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones
+                                     -> add constraint foreign key(id_cliente)
+                                     -> reference clientes(id)
+                                     -> on delete cascade
+                                     -> on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference clientes(id)
+on delete cascade
+on update cascade' at line 3
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreign key(id_cliente) reference cliente(id) on delete cascade on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference cliente(id) on delete cascade on update cascade' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete restrict on update cascade;
+Query OK, 3 rows affected (9.6895 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+-------------+
+| id | id_clientes | calle          | colonia     |
++----+-------------+----------------+-------------+
+|  2 |           5 | romero         | SanGregorio |
+|  3 |           2 | Av. industrias | Revo.       |
+|  4 |           2 | Av. Delicias   | Paseos      |
++----+-------------+----------------+-------------+
+3 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes where id=5;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from direcciones  where id_clientes=5;
+Query OK, 1 row affected (0.1474 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+----------+------------+
+| id | nombre | apellido | fecha_nac  |
++----+--------+----------+------------+
+|  2 | pedro  | paramo   | 1999-07-05 |
+|  5 | juan   | perez    | 1981-11-10 |
++----+--------+----------+------------+
+2 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+---------+
+| id | id_clientes | calle          | colonia |
++----+-------------+----------------+---------+
+|  3 |           2 | Av. industrias | Revo.   |
+|  4 |           2 | Av. Delicias   | Paseos  |
++----+-------------+----------------+---------+
+2 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > desc direcciones;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id          | int         | NO   | PRI | NULL    | auto_increment |
+| id_clientes | int         | NO   | MUL | NULL    |                |
+| calle       | varchar(50) | NO   |     | NULL    |                |
+| colonia     | varchar(50) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.1372 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreign key(id_cliente) reference cliente(id) on delete cascade on update cascade;alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete restrict on update cascade;select * from direcciones;delete from clientes where id=5;select * from direcciones;alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete restrict on update cascade;select * from direcciones;select * from direcciones;
++----+-------------+----------------+---------+
+| id | id_clientes | calle          | colonia |
++----+-------------+----------------+---------+
+|  3 |           2 | Av. industrias | Revo.   |
+| alter table direcciones modify colum id_clientes varchar(50) null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id_clientes varchar(50) null' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones modify column id_clientes varchar(50) null;er table direcciones modify colum id_clientes varchar(50) null; manual that corresponds to your M
+ERROR: 3780 (HY000): Referencing column 'id_clientes' and referenced column 'id' in foreign key constraint 'direcciones_ibfk_1' are incompatible.lientes varchar(50) null;
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table reference direcciones
+                                     -> restrict null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'direcciones
+restrict null' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table reference
+                                     -> alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete restrict on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table direcciones add constraint foreign key(id_clientes) references clientes(id' at line 2
+ MySQL  localhost:3306 ssl  tbd2  SQL >  alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete restrict on update cascade;
+Query OK, 2 rows affected (6.6242 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+----------+------------+
+| id | nombre | apellido | fecha_nac  |
++----+--------+----------+------------+
+|  2 | pedro  | paramo   | 1999-07-05 |
+|  5 | juan   | perez    | 1981-11-10 |
++----+--------+----------+------------+
+2 rows in set (0.0125 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from direcciones  where id_clientes=5;
+Query OK, 0 rows affected (0.0269 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+----------+------------+
+| id | nombre | apellido | fecha_nac  |
++----+--------+----------+------------+
+|  2 | pedro  | paramo   | 1999-07-05 |
+|  5 | juan   | perez    | 1981-11-10 |
++----+--------+----------+------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint null(id_clientes) references clientes(id) on delete restrict on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null(id_clientes) references clientes(id) on delete restrict on update cascade' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > show table direcciones;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'direcciones' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > show create table direcciones;
++-------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table       | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
++-------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| direcciones | CREATE TABLE `direcciones` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_clientes` int NOT NULL,
+  `calle` varchar(50) NOT NULL,
+  `colonia` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_clientes` (`id_clientes`),
+  CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones
+                                     -> drop constraint direcciones_ibfk_1;
+Query OK, 0 rows affected (0.6226 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete set null on update cascade;
+ERROR: 1830 (HY000): Column 'id_clientes' cannot be NOT NULL: needed in a foreign key constraint 'direcciones_ibfk_3' SET NULL
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+---------+
+| id | id_clientes | calle          | colonia |
++----+-------------+----------------+---------+
+|  3 |           2 | Av. industrias | Revo.   |
+|  4 |           2 | Av. Delicias   | Paseos  |
++----+-------------+----------------+---------+
+2 rows in set (0.0011 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+----------+------------+
+| id | nombre | apellido | fecha_nac  |
++----+--------+----------+------------+
+|  2 | pedro  | paramo   | 1999-07-05 |
+|  5 | juan   | perez    | 1981-11-10 |
++----+--------+----------+------------+
+2 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL >
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones modify colum id_clientes varchar(50) null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id_clientes varchar(50) null' at line 1
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones modify column id_clientes varchar(50) null;
+ERROR: 3780 (HY000): Referencing column 'id_clientes' and referenced column 'id' in foreign key constraint 'direcciones_ibfk_2' are incompatible.
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones modify column id_clientes varchar(50) null;
+ERROR: 3780 (HY000): Referencing column 'id_clientes' and referenced column 'id' in foreign key constraint 'direcciones_ibfk_2' are incompatible.
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones modify column id varchar(50) null;
+ERROR: 1171 (42000): All parts of a PRIMARY KEY must be NOT NULL; if you need NULL in a key, use UNIQUE instead
+ MySQL  localhost:3306 ssl  tbd2  SQL > alter table direcciones add constraint foreign key(id_clientes) references clientes(id) on delete set null on update cascade;
+ERROR: 1830 (HY000): Column 'id_clientes' cannot be NOT NULL: needed in a foreign key constraint 'direcciones_ibfk_3' SET NULL
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from direcciones;
++----+-------------+----------------+---------+
+| id | id_clientes | calle          | colonia |
++----+-------------+----------------+---------+
+|  3 |           2 | Av. industrias | Revo.   |
+|  4 |           2 | Av. Delicias   | Paseos  |
++----+-------------+----------------+---------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > delete from clientes;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tbd2`.`direcciones`, CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_clientes`) REFERENCES `clientes` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  tbd2  SQL > drop table clientes;
+ERROR: 3730 (HY000): Cannot drop table 'clientes' referenced by a foreign key constraint 'direcciones_ibfk_2' on table 'direcciones'.
+ MySQL  localhost:3306 ssl  tbd2  SQL > select * from clientes;
++----+--------+----------+------------+
+| id | nombre | apellido | fecha_nac  |
++----+--------+----------+------------+
+|  2 | pedro  | paramo   | 1999-07-05 |
+|  5 | juan   | perez    | 1981-11-10 |
++----+--------+----------+------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL >
