@@ -1,0 +1,146 @@
+MySQL Shell 8.0.36
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 21
+Server version: 8.0.36 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| agencia            |
+| credit_cards       |
+| information_schema |
+| mysql              |
+| orders             |
+| performance_schema |
+| rh                 |
+| sakila             |
+| sys                |
+| tbd2               |
+| tbd_1              |
+| world              |
++--------------------+
+12 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  SQL > use tbd2;
+Default schema set to `tbd2`.
+Fetching global names, object names from `tbd2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd2  SQL > show tables;
++----------------+
+| Tables_in_tbd2 |
++----------------+
+| clientes       |
+| direcciones    |
++----------------+
+2 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > create database Tarjetas;
+Query OK, 1 row affected (0.1892 sec)
+ MySQL  localhost:3306 ssl  tbd2  SQL > use Tarjetas;
+Default schema set to `Tarjetas`.
+Fetching global names, object names from `tarjetas` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tarjetas  SQL > Create table Cliente(
+                                         -> id_clientes int not null auto_increment key
+                                         -> nombre varchar(50) not null);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'nombre varchar(50) not null)' at line 3
+ MySQL  localhost:3306 ssl  tarjetas  SQL > Create table Cliente( id_clientes int not null auto_increment key, nombre varchar(50) not null);
+Query OK, 0 rows affected (1.6262 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > Create table Bancos( id_banco int not null auto_increment key, nombre varchar(50) not null);
+Query OK, 0 rows affected (0.9187 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc clientes;
+ERROR: 1146 (42S02): Table 'tarjetas.clientes' doesn't exist
+ MySQL  localhost:3306 ssl  tarjetas  SQL > alter table clientes rename column id_clientes to id_clientes;
+ERROR: 1146 (42S02): Table 'tarjetas.clientes' doesn't exist
+ MySQL  localhost:3306 ssl  tarjetas  SQL > create table tarjetas(
+                                         -> id_tarjetas int not null
+                                         -> key auto_increment, nombre
+                                         -> varchar(50));
+Query OK, 0 rows affected (1.3032 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > create table tarjetasCliente( id_tarjetas int not null  key auto_increment, nombre varchar(50));
+Query OK, 0 rows affected (1.3760 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > ALTER TABLE tarjetasCliente ADD fecha_emision DATE NOT NULL, ADD fecha_corte DATE NOT NULL, ADD pin INT NOT NULL, ADD credito FLOAT NOT NULL, ADD id_cliente INT NOT NULL, ADD id_banco INT NOT NULL, ADD id_tarjeta INT NOT NULL, ADD FOREIGN KEY (id_cliente);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  tarjetas  SQL > ALTER TABLE tarjetasCliente ADD fecha_emision DATE NOT NULL, ADD fecha_corte DATE NOT NULL, ADD pin INT NOT NULL, ADD credito FLOAT NOT NULL, ADD id_cliente INT NOT NULL, ADD id_banco INT NOT NULL, ADD id_tarjeta INT NOT NULL;
+Query OK, 0 rows affected (2.2309 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc tarjetasCliente;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| id_tclientes  | int         | NO   | PRI | NULL    | auto_increment |
+| cardnumber    | varchar(50) | YES  |     | NULL    |                |
+| fecha_emision | date        | NO   |     | NULL    |                |
+| fecha_corte   | date        | NO   |     | NULL    |                |
+| pin           | int         | NO   |     | NULL    |                |
+| credito       | float       | NO   |     | NULL    |                |
+| id_cliente    | int         | NO   |     | NULL    |                |
+| id_banco      | int         | NO   |     | NULL    |                |
+| id_tarjeta    | int         | NO   |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+9 rows in set (0.0039 sec)
+ 
+
+ MySQL  localhost:3306 ssl  tarjetas  SQL > ALTER TABLE tarjetasCliente
+                                         -> MODIFY COLUMN id_tcliente INT NOT NULL AUTO_INCREMENT,
+                                         -> MODIFY COLUMN cardnumber VARCHAR(50) DEFAULT NULL,
+                                         -> MODIFY COLUMN fecha_emision DATE NOT NULL,
+                                         -> MODIFY COLUMN fecha_corte DATE NOT NULL,
+                                         -> MODIFY COLUMN pin INT NOT NULL,
+                                         -> MODIFY COLUMN credito FLOAT NOT NULL,
+                                         -> MODIFY COLUMN id_cliente INT NOT NULL,
+                                         -> MODIFY COLUMN id_banco INT NOT NULL,
+                                         -> MODIFY COLUMN id_tarjeta INT NOT NULL,
+                                         -> DROP PRIMARY KEY,
+                                         -> ADD PRIMARY KEY (id_tclientes);
+ERROR: 1054 (42S22): Unknown column 'id_tcliente' in 'tarjetascliente'
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc tarjetascliente;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| id_tclientes  | int         | NO   | PRI | NULL    | auto_increment |
+| cardnumber    | varchar(50) | YES  |     | NULL    |                |
+| fecha_emision | date        | NO   |     | NULL    |                |
+| fecha_corte   | date        | NO   |     | NULL    |                |
+| pin           | int         | NO   |     | NULL    |                |
+| credito       | float       | NO   |     | NULL    |                |
+| id_cliente    | int         | NO   |     | NULL    |                |
+| id_banco      | int         | NO   |     | NULL    |                |
+| id_tarjeta    | int         | NO   |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+9 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc Cliente;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_clientes | int         | NO   | PRI | NULL    | auto_increment |
+| nombre      | varchar(50) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0034 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc Banco;
+ERROR: 1146 (42S02): Table 'tarjetas.banco' doesn't exist
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc Bancos;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id_banco | int         | NO   | PRI | NULL    | auto_increment |
+| nombre   | varchar(50) | NO   |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL > desc Tarjetas;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_tarjetas | int         | NO   | PRI | NULL    | auto_increment |
+| nombre      | varchar(50) | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0030 sec)
+ MySQL  localhost:3306 ssl  tarjetas  SQL >
