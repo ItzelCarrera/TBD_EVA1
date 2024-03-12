@@ -1,0 +1,340 @@
+MySQL Shell 8.0.36
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 22
+Server version: 8.0.36 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| agencia            |
+| credit_cards       |
+| information_schema |
+| mysql              |
+| orders             |
+| performance_schema |
+| rh                 |
+| sakila             |
+| sys                |
+| tarjetas           |
+| tbd2               |
+| tbd_1              |
+| world              |
++--------------------+
+13 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  SQL > create databases Orders;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databases Orders' at line 1
+ MySQL  localhost:3306 ssl  SQL > create databases Orders_TDB;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databases Orders_TDB' at line 1
+ MySQL  localhost:3306 ssl  SQL > create database Orders_TDB;
+Query OK, 1 row affected (0.7321 sec)
+ MySQL  localhost:3306 ssl  SQL > use Orders_tbd;
+MySQL Error 1049: Unknown database 'orders_tbd'
+ MySQL  localhost:3306 ssl  SQL > use Orders_tdb;
+Default schema set to `Orders_tdb`.
+Fetching global names, object names from `orders_tdb` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  orders_tdb  SQL > create table salesreps;
+ERROR: 4028 (HY000): A table must have at least one visible column.
+ MySQL  localhost:3306 ssl  orders_tdb  SQL > create batabase Orders_tbd;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'batabase Orders_tbd' at line 1
+ MySQL  localhost:3306 ssl  orders_tdb  SQL > create database Orders_tbd;
+Query OK, 1 row affected (0.1301 sec)
+ MySQL  localhost:3306 ssl  orders_tdb  SQL > use oreders_tbd;
+MySQL Error 1049: Unknown database 'oreders_tbd'
+ MySQL  localhost:3306 ssl  orders_tdb  SQL > use orders_tbd;
+Default schema set to `orders_tbd`.
+Fetching global names, object names from `orders_tbd` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > show tables;
+Empty set (0.3649 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table salesreps;
+ERROR: 4028 (HY000): A table must have at least one visible column.
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table salesreps(
+                                           -> id int not null auto_increment key,
+                                           -> lastName varchar(50) not null,
+                                           -> firstName varchar(50) not null,
+                                           -> commission int not null);
+Query OK, 0 rows affected (2.4722 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table customers(
+                                           -> id int not null auto_increment key,
+                                           -> lastName varchar(50) not null,
+                                           -> firstName varchar(50) not null,
+                                           -> companyName varchar(50) not null,
+                                           -> street1 varchar(50) not null,
+                                           -> street2 varchar(50),
+                                           -> city varchar(50) not null,
+                                           -> satate varchar(50) not null,
+                                           -> zipcode int not null,
+                                           -> phone varchar(50) not null,
+                                           -> fax varchar(50),
+                                           -> email varchar(50),
+                                           -> S_ID int not null auto_increment key);
+ERROR: 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table customers( id int not null auto_increment key, lastName varchar(50) not null, firstName varchar(50) not null, companyName varchar(50) not null, street1 varchar(50) not null, street2 varchar(50), city varchar(50) not null, satate varchar(50) not null, zipcode int not null, phone varchar(50) not null, fax varchar(50), email varchar(50));
+Query OK, 0 rows affected (2.2618 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table orders(
+                                           -> id int not null auto_increment key,
+                                           -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table orders( id_order int not null auto_increment key
+                                           -> orderDate date,
+                                           -> shipDate date not null,
+                                           -> paidDate date not null,
+                                           -> status varchar(50));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'orderDate date,
+shipDate date not null,
+paidDate date not null,
+status varchar(5' at line 2
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table orders( id_order int not null auto_increment key, orderDate date, shipDate date not null, paidDate date not null, status varchar(50));
+Query OK, 0 rows affected (1.6828 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table Items(
+                                           -> id_item int not null auto_increment key,
+                                           -> quantit varchar(50));
+Query OK, 0 rows affected (1.3678 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > create table Parts(
+                                           -> id_parts int not null auto_increment key,
+                                           -> description varchar(50),
+                                           -> unitprice int not null,
+                                           -> onhand varchar(50),
+                                           -> reorder varchar(50));
+Query OK, 0 rows affected (1.9676 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table salesreps
+                                           -> change column id id_salesreps
+                                           -> int auto_increment;
+Query OK, 0 rows affected (3.4613 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc salesresps;
+ERROR: 1146 (42S02): Table 'orders_tbd.salesresps' doesn't exist
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc salesreps;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_salesreps | int         | NO   | PRI | NULL    | auto_increment |
+| lastName     | varchar(50) | NO   |     | NULL    |                |
+| firstName    | varchar(50) | NO   |     | NULL    |                |
+| commission   | int         | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.3129 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers change column id id_customers int auto_increment;
+Query OK, 0 rows affected (1.4884 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers
+                                           -> add constraint foreign key(id_salesreps)
+                                           -> reference salesreps(id)
+                                           -> on delete cascade
+                                           -> on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference salesreps(id)
+on delete cascade
+on update cascade' at line 3
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add constraint foreign key(id_salesreps) reference salesreps(id_salesreps) on delete cascade on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference salesreps(id_salesreps) on delete cascade on update cascade' at line 1
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add constraint foreign key(id_salesreps) reference salesreps(id) on delete cascade on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference salesreps(id) on delete cascade on update cascade' at line 1
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add constraint foreign key(id_salesreps) references salesreps(id_salesreps) on delete cascade on update cascade;
+ERROR: 1072 (42000): Key column 'id_salesreps' doesn't exist in table
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc customers;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_customers | int         | NO   | PRI | NULL    | auto_increment |
+| lastName     | varchar(50) | NO   |     | NULL    |                |
+| firstName    | varchar(50) | NO   |     | NULL    |                |
+| companyName  | varchar(50) | NO   |     | NULL    |                |
+| street1      | varchar(50) | NO   |     | NULL    |                |
+| street2      | varchar(50) | YES  |     | NULL    |                |
+| city         | varchar(50) | NO   |     | NULL    |                |
+| satate       | varchar(50) | NO   |     | NULL    |                |
+| zipcode      | int         | NO   |     | NULL    |                |
+| phone        | varchar(50) | NO   |     | NULL    |                |
+| fax          | varchar(50) | YES  |     | NULL    |                |
+| email        | varchar(50) | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+12 rows in set (0.0165 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers
+                                           -> add column ID_S int not null
+                                           -> auto increment primary key;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto increment primary key' at line 3
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add column ID_S int not null auto_increment primary key;
+ERROR: 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add column ID_S int not null;
+Query OK, 0 rows affected (1.7424 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc customers;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_customers | int         | NO   | PRI | NULL    | auto_increment |
+| lastName     | varchar(50) | NO   |     | NULL    |                |
+| firstName    | varchar(50) | NO   |     | NULL    |                |
+| companyName  | varchar(50) | NO   |     | NULL    |                |
+| street1      | varchar(50) | NO   |     | NULL    |                |
+| street2      | varchar(50) | YES  |     | NULL    |                |
+| city         | varchar(50) | NO   |     | NULL    |                |
+| satate       | varchar(50) | NO   |     | NULL    |                |
+| zipcode      | int         | NO   |     | NULL    |                |
+| phone        | varchar(50) | NO   |     | NULL    |                |
+| fax          | varchar(50) | YES  |     | NULL    |                |
+| email        | varchar(50) | YES  |     | NULL    |                |
+| ID_S         | int         | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+13 rows in set (0.0039 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc salesreps;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_salesreps | int         | NO   | PRI | NULL    | auto_increment |
+| lastName     | varchar(50) | NO   |     | NULL    |                |
+| firstName    | varchar(50) | NO   |     | NULL    |                |
+| commission   | int         | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add constraint foreign key(id_salesreps) references salesreps(ID_S) on delete cascade on update cascade;
+ERROR: 1072 (42000): Key column 'id_salesreps' doesn't exist in table
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table customers add constraint foreign key(ID_S) references salesreps(id_salesreps) on delete cascade on update cascade;
+Query OK, 0 rows affected (4.6754 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc customers;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_customers | int         | NO   | PRI | NULL    | auto_increment |
+| lastName     | varchar(50) | NO   |     | NULL    |                |
+| firstName    | varchar(50) | NO   |     | NULL    |                |
+| companyName  | varchar(50) | NO   |     | NULL    |                |
+| street1      | varchar(50) | NO   |     | NULL    |                |
+| street2      | varchar(50) | YES  |     | NULL    |                |
+| city         | varchar(50) | NO   |     | NULL    |                |
+| satate       | varchar(50) | NO   |     | NULL    |                |
+| zipcode      | int         | NO   |     | NULL    |                |
+| phone        | varchar(50) | NO   |     | NULL    |                |
+| fax          | varchar(50) | YES  |     | NULL    |                |
+| email        | varchar(50) | YES  |     | NULL    |                |
+| ID_S         | int         | NO   | MUL | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+13 rows in set (0.0024 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc orders;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id_order  | int         | NO   | PRI | NULL    | auto_increment |
+| orderDate | date        | YES  |     | NULL    |                |
+| shipDate  | date        | NO   |     | NULL    |                |
+| paidDate  | date        | NO   |     | NULL    |                |
+| status    | varchar(50) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0023 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table orders add column ID_C int not null;
+Query OK, 0 rows affected (0.5752 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table orders add constraint foreign key(ID_C) references customers(id_customers) on delete cascade on update cascade;
+Query OK, 0 rows affected (3.2502 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc orders;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id_order  | int         | NO   | PRI | NULL    | auto_increment |
+| orderDate | date        | YES  |     | NULL    |                |
+| shipDate  | date        | NO   |     | NULL    |                |
+| paidDate  | date        | NO   |     | NULL    |                |
+| status    | varchar(50) | YES  |     | NULL    |                |
+| ID_C      | int         | NO   | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+6 rows in set (0.0020 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc item;
+ERROR: 1146 (42S02): Table 'orders_tbd.item' doesn't exist
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc items;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| id_item | int         | NO   | PRI | NULL    | auto_increment |
+| quantit | varchar(50) | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table orders add column ID_C int not null,;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table orders add column ID_C int not null,
+                                           -> ;;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ERROR: 1065 (42000): Query was empty
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table orders add column ID_O int not null,
+                                           -> desc orders;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc orders' at line 2
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table items add column ID_O int not null,
+                                           -> add column ID_P not null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null' at line 2
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table items add column ID_O int not null, add column ID_P int  not null;
+Query OK, 0 rows affected (0.5298 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc items;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| id_item | int         | NO   | PRI | NULL    | auto_increment |
+| quantit | varchar(50) | YES  |     | NULL    |                |
+| ID_O    | int         | NO   |     | NULL    |                |
+| ID_P    | int         | NO   |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table items add constraint foreign key(ID_O) references orders(id_order) on delete cascade on update cascade, add constraint foreign key(ID_P) references parts(id_parts) on delete cascade on update cascade;
+Query OK, 0 rows affected (2.9564 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc items;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| id_item | int         | NO   | PRI | NULL    | auto_increment |
+| quantit | varchar(50) | YES  |     | NULL    |                |
+| ID_O    | int         | NO   | MUL | NULL    |                |
+| ID_P    | int         | NO   | MUL | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc parts;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_parts    | int         | NO   | PRI | NULL    | auto_increment |
+| description | varchar(50) | YES  |     | NULL    |                |
+| unitprice   | int         | NO   |     | NULL    |                |
+| onhand      | varchar(50) | YES  |     | NULL    |                |
+| reorder     | varchar(50) | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0024 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table parts add column ID_I int not null;
+Query OK, 0 rows affected (1.0687 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > alter table parts add constraint foreign key(ID_I) references items(id_item) on delete cascade on update cascade;
+Query OK, 0 rows affected (3.4123 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  orders_tbd  SQL > desc parts;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_parts    | int         | NO   | PRI | NULL    | auto_increment |
+| description | varchar(50) | YES  |     | NULL    |                |
+| unitprice   | int         | NO   |     | NULL    |                |
+| onhand      | varchar(50) | YES  |     | NULL    |                |
+| reorder     | varchar(50) | YES  |     | NULL    |                |
+| ID_I        | int         | NO   | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.0020 sec)
+ MySQL  localhost:3306 ssl  orders_tbd  SQL >
