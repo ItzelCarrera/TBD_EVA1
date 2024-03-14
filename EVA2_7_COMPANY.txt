@@ -1,0 +1,342 @@
+MySQL Shell 8.0.36
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 8.0.36 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create database company;
+Query OK, 1 row affected (0.3471 sec)
+ MySQL  localhost:3306 ssl  SQL > use company;
+Default schema set to `company`.
+Fetching global names, object names from `company` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  company  SQL > show tables;
+Empty set (0.0649 sec)
+ MySQL  localhost:3306 ssl  company  SQL > CREATE TABLE Employee (
+                                        -> EmployeeId INT PRIMARY KEY,
+                                        -> FullName VARCHAR(50) NOT NULL,
+                                        -> Technology VARCHAR(50) NOT NULL,
+                                        -> Salary FLOAT NOT NULL,
+                                        -> Gender VARCHAR(50) NOT NULL,
+                                        -> Age INT NOT NULL);CREATE TABLE Employee (
+Query OK, 0 rows affected (1.9984 sec)
+                                        -> EmployeeId INT PRIMARY KEY,
+                                        -> FullName VARCHAR(50) NOT NULL,
+                                        -> Technology VARCHAR(50) NOT NULL,
+                                        -> Salary FLOAT NOT NULL,
+                                        -> Gender VARCHAR(50) NOT NULL,
+                                        -> show tables;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'show tables' at line 7
+ MySQL  localhost:3306 ssl  company  SQL > desc Employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| EmployeeId | int         | NO   | PRI | NULL    |       |
+| FullName   | varchar(50) | NO   |     | NULL    |       |
+| Technology | varchar(50) | NO   |     | NULL    |       |
+| Salary     | float       | NO   |     | NULL    |       |
+| Gender     | varchar(50) | NO   |     | NULL    |       |
+| Age        | int         | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.0026 sec)
+ MySQL  localhost:3306 ssl  company  SQL > INSERT INTO Employee (EmployeeId, FullName, Technology, Salary, Gender, Age)
+
+                                        -> VALUES (1001, 'John Doe', 'Java', 35000, 'Male', 25),
+                                        -> (1002, 'Mary Smith', 'Java', 45000, 'Female', 27),
+                                        -> (1003, 'James Brown', 'Java', 50000, 'Male', 28),
+                                        -> (1004, 'Mike Walker', '.NET', 50000, 'Male', 28),
+                                        -> (1005, 'Linda Jones', '.NET', 75000, 'Female', 26),
+                                        -> (1006, 'Anurag Mohanty', '.NET', 35000, 'Male', 25),
+                                        -> (1007, 'Priyanla Dewangan', '.NET', 45000, 'Female', 27),
+                                        -> (1008, 'Samit Montoya', '.NET', 50000, 'Male', 28),
+                                        -> (1009, 'Pranaya Kumar', '.Java', 70000, 'Male', 29),
+                                        -> (1010, 'Hina Shamara', '.Java', 75000, 'Female', 27);
+Query OK, 10 rows affected (0.3583 sec)
+
+Records: 10  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  company  SQL > select * from Employee;
++------------+-------------------+------------+--------+--------+-----+
+| EmployeeId | FullName          | Technology | Salary | Gender | Age |
++------------+-------------------+------------+--------+--------+-----+
+|       1001 | John Doe          | Java       |  35000 | Male   |  25 |
+|       1002 | Mary Smith        | Java       |  45000 | Female |  27 |
+|       1003 | James Brown       | Java       |  50000 | Male   |  28 |
+|       1004 | Mike Walker       | .NET       |  50000 | Male   |  28 |
+|       1005 | Linda Jones       | .NET       |  75000 | Female |  26 |
+|       1006 | Anurag Mohanty    | .NET       |  35000 | Male   |  25 |
+|       1007 | Priyanla Dewangan | .NET       |  45000 | Female |  27 |
+|       1008 | Samit Montoya     | .NET       |  50000 | Male   |  28 |
+|       1009 | Pranaya Kumar     | .Java      |  70000 | Male   |  29 |
+|       1010 | Hina Shamara      | .Java      |  75000 | Female |  27 |
++------------+-------------------+------------+--------+--------+-----+
+10 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  company  SQL > CREATE TABLE Projects (
+                                        -> ProjectId INT PRIMARY KEY AUTO_INCREMENT,
+                                        -> ProjectName VARCHAR(200) NOT NULL,
+                                        -> EmployeeId INT,
+                                        -> StartDate DATETIME,
+                                        -> EndDate DATETIME,
+                                        -> FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId));
+Query OK, 0 rows affected (1.5970 sec)
+ MySQL  localhost:3306 ssl  company  SQL > desc Projects;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| ProjectId   | int          | NO   | PRI | NULL    | auto_increment |
+| ProjectName | varchar(200) | NO   |     | NULL    |                |
+| EmployeeId  | int          | YES  | MUL | NULL    |                |
+| StartDate   | datetime     | YES  |     | NULL    |                |
+| EndDate     | datetime     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  company  SQL > INSERT INTO Projects (ProjectName, EmployeeId, StartDate, EndDate)
+                                        -> VALUES ('Develop Ecommerse Website from scratch', 1003, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY)),
+                                        -> ('WordPress Website for our company', 1002, NOW(), DATE_ADD(NOW(), INTERVAL 45 DAY)),
+                                        -> ('Manage our Company Servers', 1007, NOW(), DATE_ADD(NOW(), INTERVAL 45 DAY)),
+                                        -> ('Hosting account is not working', 1009, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY)),
+                                        -> ('MySQL database from my desktop application', 1010, NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+                                        -> ('Develop new WordPress plugin for my business website', NULL, NOW(), DATE_ADD(NOW(), INTERVAL 10 DAY)),
+                                        -> ('Migrate web application and database to new server', NULL, NOW(), DATE_ADD(NOW(), INTERVAL 5 DAY)),
+                                        -> ('Android Application development', 1004, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY)),
+                                        -> ('Hosting account is not working', 1001, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY)),
+                                        -> ('MySQL database from my desktop application', 1008, NOW(), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+                                        -> ('Develop new WordPress plugin for my business website', NULL, NOW(), DATE_ADD(NOW(), INTERVAL 10 DAY));
+Query OK, 11 rows affected (0.0967 sec)
+
+Records: 11  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  company  SQL > select * from Projects;
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+| ProjectId | ProjectName                                          | EmployeeId | StartDate           | EndDate             |
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+|         1 | Develop Ecommerse Website from scratch               |       1003 | 2024-03-14 17:18:25 | 2024-04-13 17:18:25 |
+|         2 | WordPress Website for our company                    |       1002 | 2024-03-14 17:18:25 | 2024-04-28 17:18:25 |
+|         3 | Manage our Company Servers                           |       1007 | 2024-03-14 17:18:25 | 2024-04-28 17:18:25 |
+|         4 | Hosting account is not working                       |       1009 | 2024-03-14 17:18:25 | 2024-03-21 17:18:25 |
+|         5 | MySQL database from my desktop application           |       1010 | 2024-03-14 17:18:25 | 2024-03-29 17:18:25 |
+|         6 | Develop new WordPress plugin for my business website |       NULL | 2024-03-14 17:18:25 | 2024-03-24 17:18:25 |
+|         7 | Migrate web application and database to new server   |       NULL | 2024-03-14 17:18:25 | 2024-03-19 17:18:25 |
+|         8 | Android Application development                      |       1004 | 2024-03-14 17:18:25 | 2024-04-13 17:18:25 |
+|         9 | Hosting account is not working                       |       1001 | 2024-03-14 17:18:25 | 2024-03-21 17:18:25 |
+|        10 | MySQL database from my desktop application           |       1008 | 2024-03-14 17:18:25 | 2024-03-29 17:18:25 |
+|        11 | Develop new WordPress plugin for my business website |       NULL | 2024-03-14 17:18:25 | 2024-03-24 17:18:25 |
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+11 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  company  SQL > CREATE TABLE Address(
+                                        -> AddressId INT PRIMARY KEY AUTO_INCREMENT,
+                                        -> EmployeeId INT,
+                                        -> Country VARCHAR(50),
+                                        -> State VARCHAR(50),
+                                        -> City VARCHAR(50),
+                                        -> FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId));
+Query OK, 0 rows affected (1.7731 sec)
+ MySQL  localhost:3306 ssl  company  SQL > desc Address;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| AddressId  | int         | NO   | PRI | NULL    | auto_increment |
+| EmployeeId | int         | YES  | MUL | NULL    |                |
+| Country    | varchar(50) | YES  |     | NULL    |                |
+| State      | varchar(50) | YES  |     | NULL    |                |
+| City       | varchar(50) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0023 sec)
+ MySQL  localhost:3306 ssl  company  SQL > INSERT INTO Address (EmployeeId, Country, State, City)
+                                        -> Values (1001, 'India', 'Odisha', 'BBSR'),
+                                        -> (1002, 'India', 'Maharashtra', 'Mumbai'),
+                                        -> (1003, 'India', 'Maharashtra', 'Pune'),
+                                        -> (1004, 'India', 'Odisha', 'Cuttack'),
+                                        -> (1005, 'India', 'Maharashtra', 'Nagpur'),
+                                        -> (1006, 'India', 'Odisha', 'BBSR');
+Query OK, 6 rows affected (0.1895 sec)
+
+Records: 6  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  company  SQL > select * from Address;
++-----------+------------+---------+-------------+---------+
+| AddressId | EmployeeId | Country | State       | City    |
++-----------+------------+---------+-------------+---------+
+|         1 |       1001 | India   | Odisha      | BBSR    |
+|         2 |       1002 | India   | Maharashtra | Mumbai  |
+|         3 |       1003 | India   | Maharashtra | Pune    |
+|         4 |       1004 | India   | Odisha      | Cuttack |
+|         5 |       1005 | India   | Maharashtra | Nagpur  |
+|         6 |       1006 | India   | Odisha      | BBSR    |
++-----------+------------+---------+-------------+---------+
+6 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  company  SQL > show tables;
++-------------------+
+| Tables_in_company |
++-------------------+
+| address           |
+| employee          |
+| projects          |
++-------------------+
+3 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  company  SQL > desc address;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| AddressId  | int         | NO   | PRI | NULL    | auto_increment |
+| EmployeeId | int         | YES  | MUL | NULL    |                |
+| Country    | varchar(50) | YES  |     | NULL    |                |
+| State      | varchar(50) | YES  |     | NULL    |                |
+| City       | varchar(50) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  company  SQL > desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| EmployeeId | int         | NO   | PRI | NULL    |       |
+| FullName   | varchar(50) | NO   |     | NULL    |       |
+| Technology | varchar(50) | NO   |     | NULL    |       |
+| Salary     | float       | NO   |     | NULL    |       |
+| Gender     | varchar(50) | NO   |     | NULL    |       |
+| Age        | int         | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.0026 sec)
+ MySQL  localhost:3306 ssl  company  SQL > desc projects;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| ProjectId   | int          | NO   | PRI | NULL    | auto_increment |
+| ProjectName | varchar(200) | NO   |     | NULL    |                |
+| EmployeeId  | int          | YES  | MUL | NULL    |                |
+| StartDate   | datetime     | YES  |     | NULL    |                |
+| EndDate     | datetime     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from projects;
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+| ProjectId | ProjectName                                          | EmployeeId | StartDate           | EndDate             |
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+|         1 | Develop Ecommerse Website from scratch               |       1003 | 2024-03-14 17:18:25 | 2024-04-13 17:18:25 |
+|         2 | WordPress Website for our company                    |       1002 | 2024-03-14 17:18:25 | 2024-04-28 17:18:25 |
+|         3 | Manage our Company Servers                           |       1007 | 2024-03-14 17:18:25 | 2024-04-28 17:18:25 |
+|         4 | Hosting account is not working                       |       1009 | 2024-03-14 17:18:25 | 2024-03-21 17:18:25 |
+|         5 | MySQL database from my desktop application           |       1010 | 2024-03-14 17:18:25 | 2024-03-29 17:18:25 |
+|         6 | Develop new WordPress plugin for my business website |       NULL | 2024-03-14 17:18:25 | 2024-03-24 17:18:25 |
+|         7 | Migrate web application and database to new server   |       NULL | 2024-03-14 17:18:25 | 2024-03-19 17:18:25 |
+|         8 | Android Application development                      |       1004 | 2024-03-14 17:18:25 | 2024-04-13 17:18:25 |
+|         9 | Hosting account is not working                       |       1001 | 2024-03-14 17:18:25 | 2024-03-21 17:18:25 |
+|        10 | MySQL database from my desktop application           |       1008 | 2024-03-14 17:18:25 | 2024-03-29 17:18:25 |
+|        11 | Develop new WordPress plugin for my business website |       NULL | 2024-03-14 17:18:25 | 2024-03-24 17:18:25 |
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+11 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee;
++------------+-------------------+------------+--------+--------+-----+
+| EmployeeId | FullName          | Technology | Salary | Gender | Age |
++------------+-------------------+------------+--------+--------+-----+
+|       1001 | John Doe          | Java       |  35000 | Male   |  25 |
+|       1002 | Mary Smith        | Java       |  45000 | Female |  27 |
+|       1003 | James Brown       | Java       |  50000 | Male   |  28 |
+|       1004 | Mike Walker       | .NET       |  50000 | Male   |  28 |
+|       1005 | Linda Jones       | .NET       |  75000 | Female |  26 |
+|       1006 | Anurag Mohanty    | .NET       |  35000 | Male   |  25 |
+|       1007 | Priyanla Dewangan | .NET       |  45000 | Female |  27 |
+|       1008 | Samit Montoya     | .NET       |  50000 | Male   |  28 |
+|       1009 | Pranaya Kumar     | .Java      |  70000 | Male   |  29 |
+|       1010 | Hina Shamara      | .Java      |  75000 | Female |  27 |
++------------+-------------------+------------+--------+--------+-----+
+10 rows in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from address;
++-----------+------------+---------+-------------+---------+
+| AddressId | EmployeeId | Country | State       | City    |
++-----------+------------+---------+-------------+---------+
+|         1 |       1001 | India   | Odisha      | BBSR    |
+|         2 |       1002 | India   | Maharashtra | Mumbai  |
+|         3 |       1003 | India   | Maharashtra | Pune    |
+|         4 |       1004 | India   | Odisha      | Cuttack |
+|         5 |       1005 | India   | Maharashtra | Nagpur  |
+|         6 |       1006 | India   | Odisha      | BBSR    |
++-----------+------------+---------+-------------+---------+
+6 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select AddressId from employee;
+ERROR: 1054 (42S22): Unknown column 'AddressId' in 'field list'
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee
+                                        -> where employee in(
+                                        -> select employee from address);
+ERROR: 1054 (42S22): Unknown column 'employee' in 'IN/ALL/ANY subquery'
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where employeeid in( select employeeid from address);
++------------+----------------+------------+--------+--------+-----+
+| EmployeeId | FullName       | Technology | Salary | Gender | Age |
++------------+----------------+------------+--------+--------+-----+
+|       1001 | John Doe       | Java       |  35000 | Male   |  25 |
+|       1002 | Mary Smith     | Java       |  45000 | Female |  27 |
+|       1003 | James Brown    | Java       |  50000 | Male   |  28 |
+|       1004 | Mike Walker    | .NET       |  50000 | Male   |  28 |
+|       1005 | Linda Jones    | .NET       |  75000 | Female |  26 |
+|       1006 | Anurag Mohanty | .NET       |  35000 | Male   |  25 |
++------------+----------------+------------+--------+--------+-----+
+6 rows in set (0.0904 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where employeeid not in( select employeeid from address);
++------------+-------------------+------------+--------+--------+-----+
+| EmployeeId | FullName          | Technology | Salary | Gender | Age |
++------------+-------------------+------------+--------+--------+-----+
+|       1007 | Priyanla Dewangan | .NET       |  45000 | Female |  27 |
+|       1008 | Samit Montoya     | .NET       |  50000 | Male   |  28 |
+|       1009 | Pranaya Kumar     | .Java      |  70000 | Male   |  29 |
+|       1010 | Hina Shamara      | .Java      |  75000 | Female |  27 |
++------------+-------------------+------------+--------+--------+-----+
+4 rows in set (0.0968 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where projectsid not in( select projectsid from projects);
+ERROR: 1054 (42S22): Unknown column 'projectsid' in 'IN/ALL/ANY subquery'
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where projectname not in(select projectsName from projects);
+ERROR: 1054 (42S22): Unknown column 'projectname' in 'IN/ALL/ANY subquery'
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where projectName not in(select projectsName from projects);
+ERROR: 1054 (42S22): Unknown column 'projectName' in 'IN/ALL/ANY subquery'
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where employeeid not in(select employeeid from projects);
+Empty set (0.0008 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where employeeid not in(select distinct(employeeid) from projects);
+Empty set (0.0009 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select distinct(employeeid) from projects;
++------------+
+| employeeid |
++------------+
+|       NULL |
+|       1001 |
+|       1002 |
+|       1003 |
+|       1004 |
+|       1007 |
+|       1008 |
+|       1009 |
+|       1010 |
++------------+
+9 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from employee where employeeid not in(select distinct(employeeid) from projects where employeeid is not null);
++------------+----------------+------------+--------+--------+-----+
+| EmployeeId | FullName       | Technology | Salary | Gender | Age |
++------------+----------------+------------+--------+--------+-----+
+|       1005 | Linda Jones    | .NET       |  75000 | Female |  26 |
+|       1006 | Anurag Mohanty | .NET       |  35000 | Male   |  25 |
++------------+----------------+------------+--------+--------+-----+
+2 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  company  SQL > select * from a.proyectname, b.fullname from projects a inner join employee
+                                        -> b on a.employeeid = b.employeeid;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from projects a inner join employee
+b on a.employeeid = b.employeeid' at line 1
+ MySQL  localhost:3306 ssl  company  SQL > select  a.proyectname, b.fullname from projects a inner join employee b on a.employeeid = b.employeeid;
+ERROR: 1054 (42S22): Unknown column 'a.proyectname' in 'field list'
+ MySQL  localhost:3306 ssl  company  SQL > select  a.projectname, b.fullname from projects a inner join employee b on a.employeeid = b.employeeid;
++--------------------------------------------+-------------------+
+| projectname                                | fullname          |
++--------------------------------------------+-------------------+
+| Hosting account is not working             | John Doe          |
+| WordPress Website for our company          | Mary Smith        |
+| Develop Ecommerse Website from scratch     | James Brown       |
+| Android Application development            | Mike Walker       |
+| Manage our Company Servers                 | Priyanla Dewangan |
+| MySQL database from my desktop application | Samit Montoya     |
+| Hosting account is not working             | Pranaya Kumar     |
+| MySQL database from my desktop application | Hina Shamara      |
++--------------------------------------------+-------------------+
+8 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  company  SQL >
